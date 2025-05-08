@@ -6,3 +6,4 @@ shader.h
 imgui.ini
 site/*
 __pycache__
+local_install

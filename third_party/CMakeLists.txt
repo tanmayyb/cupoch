@@ -157,7 +157,12 @@ endif ()
 # liblzf
 file(GLOB LIBLZF_SOURCE_FILES "liblzf/*.c")
 add_library(liblzf ${LIBLZF_SOURCE_FILES})
-target_include_directories(liblzf PUBLIC liblzf)
+# target_include_directories(liblzf PUBLIC liblzf)
+target_include_directories(liblzf
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/liblzf>
+    $<INSTALL_INTERFACE:include>
+)
 set(liblzf_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/liblzf)
 set(liblzf_LIBRARIES liblzf)
 
@@ -216,7 +221,12 @@ set(stdgpu_LIBRARIES stdgpu)
 # tinyobjloader
 message(STATUS "Building tinyobjloader from source")
 add_library(tinyobjloader STATIC tinyobjloader/tiny_obj_loader.cc)
-target_include_directories(tinyobjloader PUBLIC "tinyobjloader/")
+# target_include_directories(tinyobjloader PUBLIC "tinyobjloader/")
+target_include_directories(tinyobjloader
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tinyobjloader>
+    $<INSTALL_INTERFACE:include>
+)
 if (NOT BUILD_SHARED_LIBS)
   install(TARGETS tinyobjloader
         RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
@@ -280,7 +290,7 @@ set(urdfdom_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/urdfdom/urdf_parser/include
     ${CMAKE_CURRENT_SOURCE_DIR}/urdfdom/urdf_parser/include/tinyxml
     ${CMAKE_CURRENT_BINARY_DIR})
-set(urdfdom_LIBRARIES urdfdom)
+set(urdfdom_LIBRARIES urdfdom console_bridge)
 
 # libSGM
 set(libSGM_VERSION_MAJOR 2)
@@ -356,6 +366,7 @@ install(TARGETS ${FLANN_LIBRARIES}
                 ${imgui_LIBRARIES}
                 ${urdfdom_LIBRARIES}
     EXPORT ${PROJECT_NAME}3rdTargets
+    EXPORT ${PROJECT_NAME}Targets
     RUNTIME DESTINATION ${CUPOCH_INSTALL_BIN_DIR}
     LIBRARY DESTINATION ${CUPOCH_INSTALL_LIB_DIR}
     ARCHIVE DESTINATION ${CUPOCH_INSTALL_LIB_DIR}

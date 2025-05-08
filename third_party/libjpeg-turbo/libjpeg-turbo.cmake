@@ -81,9 +81,15 @@ set(turbojpeg_LIB_FILES
     ${3RDPARTY_INSTALL_PREFIX}/${LIBDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}${lib_name}${CMAKE_STATIC_LIBRARY_SUFFIX}
 )
 
+# target_include_directories(turbojpeg SYSTEM INTERFACE
+#     ${3RDPARTY_INSTALL_PREFIX}/include
+# )
+
 target_include_directories(turbojpeg SYSTEM INTERFACE
-    ${3RDPARTY_INSTALL_PREFIX}/include
+  $<BUILD_INTERFACE:${3RDPARTY_INSTALL_PREFIX}/include>
+  $<INSTALL_INTERFACE:include>
 )
+
 target_link_libraries(turbojpeg INTERFACE
     ${turbojpeg_LIB_FILES}
 )
